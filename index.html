@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dejohansson</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://github.com/dejohansson.png"
+    />
+    <style>
+      @font-face {
+        font-family: monaspace-neon;
+        src: url(https://cdn.jsdelivr.net/gh/githubnext/monaspace@v1.301/fonts/Web%20Fonts/Static%20Web%20Fonts/Monaspace%20Neon/MonaspaceNeon-Regular.woff2)
+          format("woff2");
+      }
+
+      html,
+      body {
+        font-feature-settings: "calt" 1;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+      }
+      body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding-top: 33.33vh;
+        font-family: monaspace-neon, monospace;
+        background: #1d2021;
+        color: #ebdbb2;
+        position: relative;
+      }
+      body::before {
+        content: "";
+        position: absolute;
+        top: -250vh;
+        left: -250vw;
+        width: 500vw;
+        height: 500vh;
+        background: radial-gradient(
+          circle,
+          #32302f 0%,
+          #282525 15%,
+          #232020 25%,
+          #1d2021 35%,
+          #1d2021 100%
+        );
+        animation: gradientShift 30s linear infinite;
+        z-index: -1;
+      }
+      @keyframes gradientShift {
+        0% {
+          transform: translate(-85vw, -80vh);
+        }
+        100% {
+          transform: translate(270vw, 80vh);
+        }
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(18px, 3vw, 3vw);
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .cursor {
+        display: inline-block;
+        width: clamp(2px, 0.3vw, 0.3vw);
+
+        background-color: currentColor;
+        animation: blink 0.8s infinite;
+      }
+      @keyframes blink {
+        0%,
+        50% {
+          opacity: 1;
+        }
+        51%,
+        100% {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>
+      <a target="_blank" rel="noopener noreferrer">
+        <span id="text" aria-live="off"></span
+        ><span class="cursor">&nbsp;</span>
+      </a>
+    </h1>
+    <script>
+      const addresses = [
+        "pages.davidjohansson.dev",
+        "github.com/dejohansson",
+        "dejohansson.github.io",
+      ];
+      const textElement = document.getElementById("text");
+      const linkElement = textElement.closest("a");
+      let addressIndex = 0;
+      let charIndex = 0;
+      let isDeleting = false;
+
+      function typeWriter() {
+        const currentAddress = addresses[addressIndex];
+
+        if (!isDeleting && charIndex < currentAddress.length) {
+          textElement.textContent = currentAddress.substring(0, charIndex + 1);
+          linkElement.href = `https://${currentAddress}`;
+          charIndex++;
+          const typingDelay = [".", "/"].includes(currentAddress[charIndex])
+            ? 120
+            : 60 + Math.random() * 20;
+          setTimeout(typeWriter, typingDelay);
+        } else if (!isDeleting && charIndex === currentAddress.length) {
+          setTimeout(() => {
+            isDeleting = true;
+            typeWriter();
+          }, 5000);
+        } else if (isDeleting && charIndex > 0) {
+          textElement.textContent = currentAddress.substring(0, charIndex - 1);
+          charIndex--;
+          setTimeout(typeWriter, 50);
+        } else if (isDeleting && charIndex === 0) {
+          isDeleting = false;
+          addressIndex = (addressIndex + 1) % addresses.length;
+          setTimeout(typeWriter, 500);
+        }
+      }
+
+      typeWriter();
+    </script>
+  </body>
+</html>
